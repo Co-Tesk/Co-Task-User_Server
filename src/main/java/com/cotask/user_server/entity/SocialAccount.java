@@ -23,7 +23,8 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "social_accounts",
-	uniqueConstraints = @UniqueConstraint(columnNames = {"provider", "providerUid"}))
+	uniqueConstraints =
+	@UniqueConstraint(name = "uk_provider_uid",columnNames = {"provider", "provider_uid"}))
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,10 +39,10 @@ public class SocialAccount {
 	private User user;
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
+	@Column(name = "provider", nullable = false)
 	private Provider provider;
 
-	@Column(nullable = false)
+	@Column(name = "provider_uid", nullable = false)
 	private String providerUid;
 
 	@CreationTimestamp

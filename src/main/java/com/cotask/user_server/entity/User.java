@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import net.minidev.json.annotate.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,13 +33,17 @@ public class User {
 	@Column(nullable = false, unique = true, length = 100)
 	private String email;
 
+	// password 는 암호화되어 저장되므로, JSON 직렬화 시 제외
+	@JsonIgnore
 	@Column(nullable = false)
+	@Setter
 	private String password;
 
 	@Column(nullable = false, length = 30)
 	@Setter
 	private String nickname;
 
+	@Column(nullable = false)
 	@Setter
 	private Boolean isVerify = false;
 
@@ -49,6 +55,7 @@ public class User {
 	@Column(nullable = false)
 	private LocalDateTime updatedAt;
 
+	@Column(nullable = false)
 	@Setter
 	private Boolean isDeleted = false;
 
