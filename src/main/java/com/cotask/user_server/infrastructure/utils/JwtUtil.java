@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -53,7 +54,11 @@ public class JwtUtil {
 
 	private String generateToken(UserDetails userDetails, Long expireMs, String category, SecretKey secretKey) {
 		Map<String, Object> claims = new LinkedHashMap<>();
-		claims.put("roles", userDetails.getAuthorities());
+		claims.put("roles",
+			userDetails.getAuthorities().stream()
+				.map(GrantedAuthority::getAuthority)
+				.toList()
+		);
 		claims.put("category", category);
 		return Jwts.builder()
 			.claims(claims)
