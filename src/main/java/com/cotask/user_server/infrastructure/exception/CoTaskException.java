@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import lombok.Getter;
 
 @Getter
-public class CoTaskException extends Exception {
+public class CoTaskException extends RuntimeException {
 	private final HttpStatus status;
 	private final String code;
 	private final String message;
