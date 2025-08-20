@@ -1,6 +1,7 @@
 package com.cotask.user_server.service;
 
 import java.time.Instant;
+import java.util.Locale;
 import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,7 +31,7 @@ public class UserServerServiceImpl implements UserServerService {
 	public void register(Register register) {
 		registerVerify(register);
 		User savedUser = userService.save(User.builder()
-			.email(register.email())
+			.email(register.email().trim().toLowerCase(Locale.ROOT))
 			.password(passwordEncoder.encode(register.getPassword()))
 			.nickname(register.nickname())
 			.isVerify(false)
@@ -49,7 +50,7 @@ public class UserServerServiceImpl implements UserServerService {
 
 	private void registerVerify(Register register) {
 		// 이메일 중복 확인
-		if (userService.existsByEmail(register.email())) {
+		if (userService.existsByEmail(register.email().trim().toLowerCase(Locale.ROOT))) {
 			throw new CoTaskException(CoTaskExceptionCode.DUPLICATE_EMAIL);
 		}
 		// 비밀번호 동일 3차 확인(1차: front, 2차: dto, 3차: registerVerify)
