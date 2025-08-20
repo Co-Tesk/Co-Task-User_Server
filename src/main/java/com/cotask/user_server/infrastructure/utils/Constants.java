@@ -3,7 +3,9 @@ package com.cotask.user_server.infrastructure.utils;
 public class Constants {
 	public static final String[] PUBLIC_PATH = {
 		"/actuator/**",
-		"/users/register"
+		"/users/register",
+		"/swagger-ui/**",
+		"/v3/api-docs/**",
 	};
 	// token constants
 	public static final String ACCESS_TOKEN_HEADER = "X-ACCESS-TOKEN";
