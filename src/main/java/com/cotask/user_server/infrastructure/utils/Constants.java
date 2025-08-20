@@ -4,6 +4,9 @@ public class Constants {
 	public static final String[] PUBLIC_PATH = {
 		"/actuator/**",
 		"/users/register",
+	};
+
+	public static final String[] SWAGGER_PATH = {
 		"/swagger-ui/**",
 		"/v3/api-docs/**",
 	};
