@@ -50,7 +50,7 @@ public class UserServerServiceImpl implements UserServerService {
 			throw new CoTaskException(CoTaskExceptionCode.DUPLICATE_EMAIL);
 		}
 		// 비밀번호 동일 3차 확인(1차: front, 2차: dto, 3차: registerVerify)
-		passwordConfirmMatch(register.password(), register.confirmPassword());
+		passwordConfirmMatch(register.password(), register.passwordConfirm());
 	}
 
 	private void passwordConfirmMatch(String password, String passwordConfirm) {
