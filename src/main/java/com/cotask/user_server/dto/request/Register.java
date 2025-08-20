@@ -29,11 +29,23 @@ public record Register(
 	String nickname
 ) implements PasswordMatchable {
 
+	/**
+	 * PasswordMatchable 인터페이스를 구현하기 위해 사용자의 비밀번호를 반환합니다.
+	 *
+	 * @return 등록 요청에 제공된 비밀번호 문자열
+	 */
 	@Override
 	public String getPassword() {
 		return password;
 	}
 
+	/**
+	 * 비밀번호 확인 값을 반환합니다.
+	 *
+	 * 비밀번호와 일치하는지 검증하기 위해 사용되며 {@link PasswordMatchable}의 구현 메서드입니다.
+	 *
+	 * @return 사용자가 입력한 비밀번호 확인 문자열
+	 */
 	@Override
 	public String getPasswordConfirm() {
 		return passwordConfirm;

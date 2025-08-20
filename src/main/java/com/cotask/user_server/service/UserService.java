@@ -11,9 +11,10 @@ public interface UserService {
 	boolean existsByEmail(String email);
 
 	/**
-	 * 사용자의 정보를 저장합니다.
-	 * @param user 사용자 정보를 담고 있는 객체
-	 * @return 저장된 사용자 객체
-	 */
+ * 주어진 사용자 정보를 저장하고 영속화된 User 객체를 반환합니다.
+ *
+ * @param user 저장할 사용자 엔티티
+ * @return 저장되어 반환된 User 객체
+ */
 	User save(User user);
 }
