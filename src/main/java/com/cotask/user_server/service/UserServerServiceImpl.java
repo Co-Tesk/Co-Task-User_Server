@@ -26,16 +26,6 @@ public class UserServerServiceImpl implements UserServerService {
 	private final UserService userService;
 	private final PasswordEncoder passwordEncoder;
 
-	/**
-	 * 새 사용자를 등록하고 이메일 인증 토큰을 생성하여 저장합니다.
-	 *
-	 * <p>입력값을 검증(registerVerify)한 뒤 비밀번호를 인코딩해 User 엔티티를 저장하고,
-	 * 해당 사용자에 대한 이메일 인증용 Verify 엔티티(만료 시간 1시간)를 생성하여 저장합니다.
-	 * 이메일 전송(비동기)은 별도 구현(kafka 등)이 필요합니다.
-	 *
-	 * @param register 등록에 필요한 이메일, 비밀번호, 닉네임 등을 담은 DTO
-	 * @throws CoTaskException 입력 검증 실패 시 발생합니다. (예: 중복 이메일, 비밀번호 확인 불일치)
-	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void register(Register register) {
