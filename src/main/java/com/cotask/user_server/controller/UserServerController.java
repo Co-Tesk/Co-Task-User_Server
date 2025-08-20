@@ -3,7 +3,7 @@ package com.cotask.user_server.controller;
 import org.springframework.http.ResponseEntity;
 
 import com.cotask.user_server.dto.request.Register;
-import com.cotask.user_server.dto.response.ExceptionResponse;
+import com.cotask.user_server.dto.response.CommonResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -38,16 +38,19 @@ public interface UserServerController {
 				content = @Content(
 					mediaType = "application/json",
 					schema = @Schema(
-						implementation = ExceptionResponse.class,
+						implementation = CommonResponse.class,
 						description = "유효성 검사 실패 시 반환되는 에러 메시지",
 						example = """
 								{
-									"status": 400,
-									"code": "VALIDATION_ERROR",
-									"message": "입력값이 유효하지 않습니다.",
-									"errors": {
-										"email": "이메일은 100자 이하이어야 합니다.",
-										"nickname": "닉네임은 필수 입력 항목입니다."
+									"success": false,
+									"error": {
+										"status": 400,
+										"code": "VALIDATION_ERROR",
+										"message": "입력값이 유효하지 않습니다.",
+										"errors": {
+											"email": "이메일은 100자 이하이어야 합니다.",
+											"nickname": "닉네임은 필수 입력 항목입니다."
+										}
 									}
 								}
 							"""
@@ -60,13 +63,16 @@ public interface UserServerController {
 				content = @Content(
 					mediaType = "application/json",
 					schema = @Schema(
-						implementation = ExceptionResponse.class,
+						implementation = CommonResponse.class,
 						description = "유효성 검사 실패 시 반환되는 에러 메시지",
 						example = """
 								{
-									"status": 409,
-									"code": "CO_TASK_001",
-									"message": "이미 사용중인 이메일입니다."
+									"success": false,
+									"error": {
+										"status": 409,
+										"code": "CO_TASK_001",
+										"message": "이미 사용중인 이메일입니다."
+									}
 								}
 							"""
 					)
@@ -78,13 +84,16 @@ public interface UserServerController {
 				content = @Content(
 					mediaType = "application/json",
 					schema = @Schema(
-						implementation = ExceptionResponse.class,
+						implementation = CommonResponse.class,
 						description = "서버 오류 발생 시 반환되는 에러 메시지",
 						example = """
 								{
-									"status": 500,
-									"code": "INTERNAL_SERVER_ERROR",
-									"message": "An internal server error occurred."
+									"success": false,
+									"error": {
+										"status": 500,
+										"code": "INTERNAL_SERVER_ERROR",
+										"message": "An internal server error occurred."
+									}
 								}
 							"""
 					)
