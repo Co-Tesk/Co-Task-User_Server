@@ -64,7 +64,7 @@ public interface UserServerController {
 						description = "유효성 검사 실패 시 반환되는 에러 메시지",
 						example = """
 								{
-									"status": 400,
+									"status": 409,
 									"code": "CO_TASK_001",
 									"message": "이미 사용중인 이메일입니다."
 								}
