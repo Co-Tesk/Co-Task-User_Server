@@ -11,6 +11,17 @@ import io.swagger.v3.oas.models.servers.Server;
 
 @Configuration
 public class SwaggerConfig {
+	/**
+	 * OpenAPI 스펙을 구성하여 Spring 빈으로 등록합니다.
+	 *
+	 * 생성되는 OpenAPI 객체는 API 문서 제목, 버전, 설명과 서버 정보를 포함합니다.
+	 * - title: "사용자 서버 API 문서"
+	 * - version: "1.0.0"
+	 * - description: Co-Task 사용자 서버의 엔드포인트 및 요청/응답 형식 설명 (HTML 줄바꿈 포함)
+	 * - servers: http://localhost:8081 (로컬 개발 서버)
+	 *
+	 * @return 구성된 OpenAPI 인스턴스
+	 */
 	@Bean
 	public OpenAPI openAPI() {
 		return new OpenAPI()
