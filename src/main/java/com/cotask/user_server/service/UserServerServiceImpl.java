@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cotask.user_server.dto.request.Register;
 import com.cotask.user_server.entity.User;
@@ -24,6 +26,7 @@ public class UserServerServiceImpl implements UserServerService {
 	private final PasswordEncoder passwordEncoder;
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void register(Register register) {
 		registerVerify(register);
 		User savedUser = userService.save(User.builder()
