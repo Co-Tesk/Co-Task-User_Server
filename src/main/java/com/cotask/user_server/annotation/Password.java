@@ -10,7 +10,7 @@ import jakarta.validation.Constraint;
 
 @Documented
 @Constraint(validatedBy = {PasswordValidator.class})
-@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.RECORD_COMPONENT, ElementType.TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Password {
 	String message() default "비밀번호는 8자 이상이어야 하며, 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함해야 합니다.";
