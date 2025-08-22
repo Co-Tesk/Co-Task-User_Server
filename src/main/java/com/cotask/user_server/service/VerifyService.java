@@ -1,5 +1,7 @@
 package com.cotask.user_server.service;
 
+import com.cotask.user_server.dto.request.Verification;
+import com.cotask.user_server.entity.User;
 import com.cotask.user_server.entity.Verify;
 
 public interface VerifyService {
@@ -10,4 +12,6 @@ public interface VerifyService {
  * @return 저장된 인증 정보 엔티티
  */
 	Verify save(Verify verify);
+
+	void validate(Verification verification, User user);
 }

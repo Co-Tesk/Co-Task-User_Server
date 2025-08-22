@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cotask.user_server.dto.request.Register;
+import com.cotask.user_server.dto.request.Verification;
 import com.cotask.user_server.entity.User;
 import com.cotask.user_server.entity.Verify;
 import com.cotask.user_server.entity.VerifyType;
@@ -41,11 +42,23 @@ public class UserServerServiceImpl implements UserServerService {
 		Verify savedVerify = verifyService.save(Verify.builder()
 			.user(savedUser)
 			.type(VerifyType.EMAIL)
-			.code(UUID.randomUUID())
+			.code(UUID.randomUUID().toString())
 			.expiresAt(Instant.now().plusSeconds(3600)) // 1시간 후 만료
 			.isUsed(false)
 			.build());
 		// TODO: kafka 를 사용한 이메일 전송 로직 추가 필요
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = CoTaskException.class)
+	public void verification(Verification verification) {
+		// verification 의 email을 사용해 사용자가 존재하는지 확인
+		User user = userService.findByEmail(verification.email());
+		// 인증정보 검증
+		verifyService.validate(verification, user);
+		// 인증 정보 검증이 통과를 한 경우
+		// 사용자의 인증 상태를 true로 변경
+		user.setIsVerify(true);
 	}
 
 	/**

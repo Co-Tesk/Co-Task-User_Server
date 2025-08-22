@@ -1,5 +1,7 @@
 package com.cotask.user_server.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.cotask.user_server.entity.User;
@@ -14,4 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
  * @return 해당 이메일을 가진 사용자가 존재하면 {@code true}, 그렇지 않으면 {@code false}
  */
 boolean existsByEmail(String email);
+
+	Optional<User> findByEmail(String email);
 }

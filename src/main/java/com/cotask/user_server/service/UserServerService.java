@@ -1,6 +1,7 @@
 package com.cotask.user_server.service;
 
 import com.cotask.user_server.dto.request.Register;
+import com.cotask.user_server.dto.request.Verification;
 import com.cotask.user_server.infrastructure.exception.CoTaskException;
 
 public interface UserServerService {
@@ -13,4 +14,6 @@ public interface UserServerService {
  * @throws CoTaskException 이메일 중복 또는 비밀번호 불일치 시 발생
  */
 	void register(Register register);
+
+	void verification(Verification verification);
 }

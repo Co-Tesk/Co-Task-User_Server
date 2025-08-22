@@ -3,6 +3,7 @@ package com.cotask.user_server.controller;
 import org.springframework.http.ResponseEntity;
 
 import com.cotask.user_server.dto.request.Register;
+import com.cotask.user_server.dto.request.Verification;
 import com.cotask.user_server.dto.response.CommonResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -102,4 +103,6 @@ public interface UserServerController {
 		}
 	)
 	ResponseEntity<?> register(Register register);
+
+	ResponseEntity<?> verification(Verification verification);
 }
