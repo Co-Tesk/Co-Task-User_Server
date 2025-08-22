@@ -17,4 +17,6 @@ public interface UserService {
  * @return 저장되어 반환된 User 객체
  */
 	User save(User user);
+
+	User findByEmail(String email);
 }
