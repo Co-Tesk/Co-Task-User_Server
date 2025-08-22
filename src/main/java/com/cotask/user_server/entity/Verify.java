@@ -2,7 +2,6 @@ package com.cotask.user_server.entity;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -42,7 +41,7 @@ public class Verify {
 	private VerifyType type;
 
 	@Column(nullable = false, length = 36)
-	private UUID code;
+	private String code;
 
 	@Column(nullable = false)
 	private Instant expiresAt;
