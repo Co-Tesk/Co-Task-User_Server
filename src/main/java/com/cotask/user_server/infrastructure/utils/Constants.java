@@ -3,7 +3,7 @@ package com.cotask.user_server.infrastructure.utils;
 public class Constants {
 	public static final String[] PUBLIC_PATH = {
 		"/actuator/**",
-		"/users/register",
+		"/users/auth/**",
 	};
 
 	public static final String[] SWAGGER_PATH = {
