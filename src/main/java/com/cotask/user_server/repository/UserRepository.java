@@ -17,5 +17,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
  */
 boolean existsByEmail(String email);
 
-	Optional<User> findByEmail(String email);
+	/**
+ * 주어진 이메일로 User 엔티티를 조회한다.
+ *
+ * 주어진 이메일에 대응하는 사용자 엔티티가 존재하면 해당 User를 Optional에 담아 반환하고,
+ * 존재하지 않으면 Optional.empty()를 반환한다.
+ *
+ * @param email 조회할 사용자의 이메일 주소
+ * @return 조회된 User를 담은 Optional, 없으면 Optional.empty()
+ */
+Optional<User> findByEmail(String email);
 }

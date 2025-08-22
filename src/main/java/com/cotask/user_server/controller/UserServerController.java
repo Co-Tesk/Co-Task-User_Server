@@ -104,5 +104,14 @@ public interface UserServerController {
 	)
 	ResponseEntity<?> register(Register register);
 
-	ResponseEntity<?> verification(Verification verification);
+	/**
+ * 사용자 검증 요청을 처리하는 엔드포인트 계약을 정의한다.
+ *
+ * <p>Verification DTO를 받아 검증을 수행하고 처리 결과를 담은 {@code ResponseEntity<?>}를 반환한다.
+ * 응답의 HTTP 상태 코드와 본문 형식(성공/오류 페이로드)은 구현체에 따라 결정된다.</p>
+ *
+ * @param verification 검증에 필요한 데이터를 담은 요청 DTO
+ * @return 처리 결과를 포함한 {@code ResponseEntity<?>}
+ */
+ResponseEntity<?> verification(Verification verification);
 }
