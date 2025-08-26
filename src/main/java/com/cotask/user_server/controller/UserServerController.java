@@ -13,10 +13,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 public interface UserServerController {
 	/**
-	 * 사용자가 회원가입을 요청할 때 호출되는 메서드
-	 * @param register 회원가입 시 필요한 정보를 담고 있는 DTO
-	 * @return ResponseEntity 객체로, 성공 시 201 Created 상태 코드를 반환하게 되며,
-	 * 실패 시 적절한 에러 메시지와 상태 코드를 포함한다.
+	 * 사용자를 등록(회원가입)합니다.
+	 *
+	 * <p>회원가입에 필요한 정보를 담은 {@code Register} DTO를 받아 처리하며,
+	 * 성공 시 HTTP 201 Created를 반환합니다. 입력 유효성 실패(400), 이메일 중복(409),
+	 * 서버 오류(500) 등 상황에 따라 적절한 에러 응답을 반환합니다.</p>
+	 *
+	 * @param register 회원가입에 필요한 데이터(이메일, 비밀번호, 닉네임 등)를 담은 DTO
+	 * @return 처리 결과를 포함한 {@code ResponseEntity}. 성공 시 상태 코드 201 Created를 반환합니다.
 	 */
 	@Operation(
 		summary = "사용자 회원가입",
