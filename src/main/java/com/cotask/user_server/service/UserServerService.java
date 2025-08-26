@@ -15,5 +15,12 @@ public interface UserServerService {
  */
 	void register(Register register);
 
-	void verification(Verification verification);
+	/**
+ * 사용자 이메일 또는 계정 검증을 수행합니다.
+ *
+ * Verification DTO에 담긴 검증 정보(예: 토큰)를 검사하여 계정의 이메일/인증 상태를 완료하거나 갱신합니다.
+ *
+ * @param verification 검증에 필요한 데이터(예: 이메일 주소, 검증 토큰). DTO 필드의 의미는 해당 타입 문서를 참조하세요.
+ */
+void verification(Verification verification);
 }
