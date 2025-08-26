@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cotask.user_server.dto.request.Register;
+import com.cotask.user_server.dto.request.Verification;
 import com.cotask.user_server.entity.User;
 import com.cotask.user_server.entity.Verify;
 import com.cotask.user_server.entity.VerifyType;
@@ -41,22 +42,29 @@ public class UserServerServiceImpl implements UserServerService {
 		Verify savedVerify = verifyService.save(Verify.builder()
 			.user(savedUser)
 			.type(VerifyType.EMAIL)
-			.code(UUID.randomUUID())
+			.code(UUID.randomUUID().toString())
 			.expiresAt(Instant.now().plusSeconds(3600)) // 1시간 후 만료
 			.isUsed(false)
 			.build());
 		// TODO: kafka 를 사용한 이메일 전송 로직 추가 필요
 	}
 
-	/**
-	 * 회원 가입 입력값의 사전 검증을 수행한다.
-	 *
-	 * <p>이메일 중복 여부와 비밀번호/비밀번호 확인 일치 여부를 확인하여 조건을 만족하지 않으면 예외를 던진다.</p>
-	 *
-	 * @param register 가입 요청 정보를 담은 DTO
-	 * @throws CoTaskException 이메일이 이미 존재하면 {@code CoTaskExceptionCode.DUPLICATE_EMAIL}을 포함한 예외가 발생한다.
-	 * @throws CoTaskException 비밀번호와 비밀번호 확인이 일치하지 않으면 {@code CoTaskExceptionCode.PASSWORD_CONFIRM_NOT_MATCH}을 포함한 예외가 발생한다.
-	 */
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = CoTaskException.class)
+	public void verification(Verification verification) {
+		// verification 의 email을 사용해 사용자가 존재하는지 확인
+		User user = userService.findByEmail(verification.email().trim().toLowerCase(Locale.ROOT));
+		// 인증정보 검증
+		verifyService.validate(verification, user);
+		// 인증 정보 검증이 통과를 한 경우
+		// 사용자의 인증 상태를 true로 변경
+		if (verification.type() == VerifyType.EMAIL) {
+			if (Boolean.FALSE.equals(user.getIsVerify())) {
+				user.setIsVerify(true);
+			}
+		}
+	}
+
 	private void registerVerify(Register register) {
 		// 이메일 중복 확인
 		if (userService.existsByEmail(register.email().trim().toLowerCase(Locale.ROOT))) {
@@ -66,13 +74,6 @@ public class UserServerServiceImpl implements UserServerService {
 		passwordConfirmMatch(register.password(), register.passwordConfirm());
 	}
 
-	/**
-	 * 비밀번호와 비밀번호 확인 값이 일치하는지 검증한다.
-	 *
-	 * @param password        사용자가 입력한 비밀번호
-	 * @param passwordConfirm 사용자가 입력한 비밀번호 확인 값
-	 * @throws CoTaskException 비밀번호와 확인 값이 일치하지 않을 경우 {@link CoTaskExceptionCode#PASSWORD_CONFIRM_NOT_MATCH} 코드로 발생
-	 */
 	private void passwordConfirmMatch(String password, String passwordConfirm) {
 		if (!password.equals(passwordConfirm)) {
 			throw new CoTaskException(CoTaskExceptionCode.PASSWORD_CONFIRM_NOT_MATCH);
