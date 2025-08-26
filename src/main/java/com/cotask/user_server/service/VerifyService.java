@@ -6,10 +6,12 @@ import com.cotask.user_server.entity.Verify;
 
 public interface VerifyService {
 	/**
- * 인증 정보를 저장하고 저장된 엔티티(예: DB에서 생성된 식별자 등 영속화된 상태가 반영된 객체)를 반환합니다.
+ * 인증 정보를 저장하고 영속화된 엔티티를 반환합니다.
  *
- * @param verify 저장할 인증 정보 엔티티
- * @return 저장된 인증 정보 엔티티
+ * 저장 과정에서 DB가 생성한 식별자 등 영속화된 상태가 반영된 Verify 객체를 반환합니다.
+ *
+ * @param verify 저장할 Verify 엔티티
+ * @return 영속화되어 반환된 Verify 엔티티
  */
 	Verify save(Verify verify);
 

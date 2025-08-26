@@ -14,6 +14,12 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService {
 	private final UserRepository repository;
 
+	/**
+	 * 주어진 이메일을 가진 사용자가 저장소에 존재하는지 확인합니다.
+	 *
+	 * @param email 확인할 사용자 이메일
+	 * @return 해당 이메일을 가진 사용자가 존재하면 {@code true}, 없으면 {@code false}
+	 */
 	@Override
 	public boolean existsByEmail(String email) {
 		return repository.existsByEmail(email);
@@ -22,11 +28,10 @@ public class UserServiceImpl implements UserService {
 	/**
 	 * 사용자 엔터티를 저장하고 영속화된 엔터티를 반환합니다.
 	 *
-	 * 전달된 User 객체를 저장(생성 또는 갱신)하여 데이터베이스에 영속화하고,
-	 * 저장 결과로 식별자(id) 등 데이터베이스에서 채워진 필드를 반영한 User 인스턴스를 반환합니다.
+	 * 전달된 User 객체를 생성 또는 갱신하여 저장하며, 저장 후 DB에서 채워진 필드(예: id, 생성/수정 시각 등)가 반영된 User 인스턴스를 반환합니다.
 	 *
-	 * @param user 저장할 사용자 엔터티 (새 객체이거나 변경된 엔터티)
-	 * @return 영속화되어 DB 필드가 반영된 User 객체
+	 * @param user 저장할 사용자 엔터티(새 객체 또는 변경된 엔터티)
+	 * @return DB에 영속화되어 필드가 반영된 User 객체
 	 */
 	@Override
 	public User save(User user) {

@@ -34,18 +34,20 @@ public class VerifyServiceImpl implements VerifyService {
 	}
 
 	/**
-	 * 사용자가 제출한 Verification을 검사하고 유효하면 해당 Verify 엔티티를 사용 처리합니다.
+	 * 사용자가 제출한 Verification의 타입과 코드가 사용자에 대해 유효한지 검사하고, 유효하면 해당 Verify를 사용 처리합니다.
 	 *
-	 * <p>주요 동작:
-	 * - 주어진 사용자(user)에 대해 isUsed가 false인 Verify 목록을 조회합니다.
-	 * - 목록이 비어 있거나, 전달된 verification의 타입·코드와 일치하는 Verify가 없으면 NOT_FOUND_VERIFICATION 예외를 던집니다.
-	 * - 일치하는 Verify가 이미 사용된 경우 ALREADY_USED_VERIFICATION 예외를 던집니다.
-	 * - 일치하는 Verify가 만료된 경우 EXPIRED_VERIFICATION 예외를 던집니다.
-	 * - 모든 검증을 통과하면 해당 Verify의 isUsed를 true로 설정합니다.
+	 * <p>검증 절차:
+	 * <ol>
+	 *   <li>주어진 사용자(user)와 일치하는 미사용 Verify를 조회합니다.</li>
+	 *   <li>일치하는 Verify가 없으면 NOT_FOUND_VERIFICATION 예외를 던집니다.</li>
+	 *   <li>조회된 Verify가 이미 사용된 경우 ALREADY_USED_VERIFICATION 예외를 던집니다.</li>
+	 *   <li>조회된 Verify가 만료된 경우 EXPIRED_VERIFICATION 예외를 던집니다.</li>
+	 *   <li>모든 검증을 통과하면 해당 Verify의 isUsed를 true로 설정합니다.</li>
+	 * </ol>
 	 *
-	 * @param verification 검증할 코드 및 타입 정보를 가진 객체
+	 * @param verification 검증할 코드와 타입 정보를 가진 객체
 	 * @param user         검증 대상 사용자
-	 * @throws CoTaskException NOT_FOUND_VERIFICATION   일치하는 사용 전(미사용) 인증 정보가 없을 때
+	 * @throws CoTaskException NOT_FOUND_VERIFICATION   일치하는 미사용 인증 정보가 없을 때
 	 *                         ALREADY_USED_VERIFICATION 이미 사용된 인증 정보를 검증하려 할 때
 	 *                         EXPIRED_VERIFICATION       인증 정보가 만료되었을 때
 	 */

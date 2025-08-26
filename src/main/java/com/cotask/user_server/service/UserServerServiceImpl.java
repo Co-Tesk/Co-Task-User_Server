@@ -27,6 +27,15 @@ public class UserServerServiceImpl implements UserServerService {
 	private final UserService userService;
 	private final PasswordEncoder passwordEncoder;
 
+	/**
+	 * 새 사용자 계정을 등록하고 이메일 인증 토큰을 생성하여 저장합니다.
+	 *
+	 * 사전 유효성 검사(이메일 중복, 비밀번호 확인)는 내부적으로 수행됩니다. 입력된 이메일은 trim 후 소문자화(Locale.ROOT)되어 저장되며,
+	 * 비밀번호는 PasswordEncoder로 인코딩되어 DB에 저장됩니다. 등록 직후 이메일 인증용 Verify 엔티티(타입: EMAIL, 만료: 1시간)가 생성되어 저장됩니다.
+	 *
+	 * @param register 등록에 필요한 정보(이메일, 비밀번호, 비밀번호 확인, 닉네임 등)를 포함한 DTO
+	 * @throws com.cotask.common.exception.CoTaskException 사전 유효성 검사 실패(예: 중복 이메일 또는 비밀번호 불일치) 시 발생할 수 있습니다.
+	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void register(Register register) {
@@ -49,6 +58,15 @@ public class UserServerServiceImpl implements UserServerService {
 		// TODO: kafka 를 사용한 이메일 전송 로직 추가 필요
 	}
 
+	/**
+	 * 인증 요청을 처리하고 사용자의 인증 상태를 갱신합니다.
+	 *
+	 * <p>전달된 Verification의 이메일(공백 제거 후 소문자화)을 사용해 사용자를 조회하고,
+	 * 검증 로직(verifyService.validate)을 실행합니다. 검증이 성공하고 Verification의 타입이
+	 * EMAIL인 경우 해당 사용자의 isVerify 플래그를 true로 설정합니다.
+	 *
+	 * @param verification 이메일, 코드, 타입 등 검증에 필요한 정보를 담은 요청 DTO
+	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = CoTaskException.class)
 	public void verification(Verification verification) {
