@@ -27,7 +27,7 @@ RUN apt-get update -y && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /app/build/libs/*.jar app.jar
 
 # 애플리케이션 포트 설정
-EXPOSE 8761
+EXPOSE 8081
 
 # 애플리케이션 실행 명령어
 ENTRYPOINT ["java", "-jar", "/app.jar"]
