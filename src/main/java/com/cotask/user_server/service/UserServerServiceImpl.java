@@ -27,16 +27,6 @@ public class UserServerServiceImpl implements UserServerService {
 	private final UserService userService;
 	private final PasswordEncoder passwordEncoder;
 
-	/**
-	 * 새 사용자 계정을 생성하고 이메일 인증 토큰을 발급하여 저장한다.
-	 *
-	 * <p>입력한 회원정보에 대해 중복 검사와 비밀번호 확인을 수행한 후,
-	 * 사용자 엔티티를 저장하고 이메일 인증용 Verify 엔티티를 생성하여 저장한다.
-	 * 생성된 인증 코드는 UUID 문자열이며 만료 시각은 생성 시점부터 1시간 뒤로 설정된다.
-	 *
-	 * @param register 회원 가입 요청 정보(이메일, 비밀번호, 비밀번호 확인, 닉네임 등)
-	 * @throws com.cotask.common.exception.CoTaskException 중복 이메일 등록 시 또는 비밀번호 확인 불일치 시 발생
-	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void register(Register register) {
@@ -59,21 +49,20 @@ public class UserServerServiceImpl implements UserServerService {
 		// TODO: kafka 를 사용한 이메일 전송 로직 추가 필요
 	}
 
-	/**
-	 * 사용자의 이메일 인증 정보를 검증하고, 검증이 성공하면 해당 사용자의 인증 상태(isVerify)를 true로 설정합니다.
-	 *
-	 * @param verification 이메일과 인증 코드를 포함한 검증 요청 객체. 이 메서드는 해당 이메일로 사용자 조회 후 검증 데이터를 확인합니다.
-	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = CoTaskException.class)
 	public void verification(Verification verification) {
 		// verification 의 email을 사용해 사용자가 존재하는지 확인
-		User user = userService.findByEmail(verification.email());
+		User user = userService.findByEmail(verification.email().trim().toLowerCase(Locale.ROOT));
 		// 인증정보 검증
 		verifyService.validate(verification, user);
 		// 인증 정보 검증이 통과를 한 경우
 		// 사용자의 인증 상태를 true로 변경
-		user.setIsVerify(true);
+		if (verification.type() == VerifyType.EMAIL) {
+			if (Boolean.FALSE.equals(user.getIsVerify())) {
+				user.setIsVerify(true);
+			}
+		}
 	}
 
 	/**
