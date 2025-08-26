@@ -63,7 +63,7 @@ public class VerifyServiceImpl implements VerifyService {
 			// verification.type()이 Verify의 type과 일치하는지 확인
 			.filter(verify -> verify.getType().equals(verification.type()))
 			// verification.code()가 Verify의 code와 일치하는지 확인
-			.filter(verify -> verify.getCode().toString().equals(verification.verificationCode()))
+			.filter(verify -> verify.getCode().equals(verification.verificationCode()))
 			// 만약 일치 할 경우 1개만 존재해야 하므로 findFirst()로 첫 번째 요소를 가져옴
 			.findFirst()
 			// 일치하는 인증 정보가 없으면 예외 발생
