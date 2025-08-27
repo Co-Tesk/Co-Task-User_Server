@@ -1,7 +1,7 @@
 package com.cotask.user_server.dto.request;
 
-import com.cotask.user_server.annotation.Password;
-import com.cotask.user_server.annotation.PasswordMatches;
+import com.cotask.user_server.annotation.dto.Password;
+import com.cotask.user_server.annotation.dto.PasswordMatches;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.Schema;
