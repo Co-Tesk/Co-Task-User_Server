@@ -12,12 +12,25 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.cotask.user_server.dto.response.CommonResponse;
 import com.cotask.user_server.dto.response.ExceptionResponse;
+import com.cotask.user_server.infrastructure.exception.CoTaskException;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+	// CoTaskException 헨들러
+	@ExceptionHandler(CoTaskException.class)
+	public ResponseEntity<?> handleCoTaskException(CoTaskException e) {
+		log.error("CoTaskException occurred: {}", e.getMessage(), e);
+		return ResponseEntity.status(e.getStatus())
+			.body(CommonResponse.fail(
+				ExceptionResponse.of(
+					e.getStatus(), e.getCode(), e.getMessage()
+				)
+			));
+	}
+
 	// Validation 예외 헨들러 (@Valid 실패)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<?> tomatoExceptionHandler(MethodArgumentNotValidException e) {
