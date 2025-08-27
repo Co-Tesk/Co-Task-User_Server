@@ -36,7 +36,9 @@ public enum CoTaskExceptionCode {
 	NOT_MATCH_VERIFICATION(
 		HttpStatus.BAD_REQUEST,
 		"CO_TASK_005",
-		"인증 정보가 일치하지 않습니다."), EXPIRED_VERIFICATION(
+		"인증 정보가 일치하지 않습니다."
+	),
+	EXPIRED_VERIFICATION(
 		HttpStatus.BAD_REQUEST,
 		"CO_TASK_006",
 		"인증 정보가 만료되었습니다."
