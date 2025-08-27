@@ -1,4 +1,4 @@
-package com.cotask.user_server.annotation;
+package com.cotask.user_server.annotation.dto;
 
 import com.cotask.user_server.dto.request.PasswordMatchable;
 

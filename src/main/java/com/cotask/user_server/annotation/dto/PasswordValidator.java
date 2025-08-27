@@ -1,4 +1,4 @@
-package com.cotask.user_server.annotation;
+package com.cotask.user_server.annotation.dto;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
