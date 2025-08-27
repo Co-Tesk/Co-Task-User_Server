@@ -67,6 +67,14 @@ public enum CoTaskExceptionCode {
 	private final String code;
 	private final String message;
 
+	/**
+	 * 현재 enum 상수에 연결된 `@ExplainError` 애노테이션의 값을 반환합니다.
+	 *
+	 * <p>해당 애노테이션이 없으면 enum의 `message` 필드 값을 반환합니다.</p>
+	 *
+	 * @return 애노테이션에 지정된 설명 문자열 또는 `message` 필드 값
+	 * @throws NoSuchFieldException 현재 enum 상수에 해당하는 필드를 리플렉션으로 찾을 수 없을 때 발생합니다.
+	 */
 	public String getExplainError() throws NoSuchFieldException {
 		// 1. CoTaskExceptionCode 클래스에서 현재 enum 상수의 필드를 찾음
 		Field field = CoTaskExceptionCode.class.getField(this.name());
