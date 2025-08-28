@@ -19,7 +19,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-	// CoTaskException 헨들러
+	/**
+	 * CoTaskException을 처리하여 표준화된 에러 응답을 반환한다.
+	 *
+	 * 상세: 발생한 CoTaskException을 로깅한 뒤, 예외에 포함된 HTTP 상태(e.getStatus())를 상태 코드로 사용하고
+	 *       ExceptionResponse.of(status, code, message)를 담은 CommonResponse.fail를 본문으로 하는 ResponseEntity를 생성해 반환한다.
+	 *
+	 * @param e 처리할 CoTaskException
+	 * @return 예외에 명시된 HTTP 상태와 표준화된 예외 응답을 포함한 ResponseEntity
+	 */
 	@ExceptionHandler(CoTaskException.class)
 	public ResponseEntity<?> handleCoTaskException(CoTaskException e) {
 		log.error("CoTaskException occurred: {}", e.getMessage(), e);
@@ -31,7 +39,16 @@ public class GlobalExceptionHandler {
 			));
 	}
 
-	// Validation 예외 헨들러 (@Valid 실패)
+	/**
+	 * 유효성 검사 실패(MethodArgumentNotValidException)를 처리하여 필드별 오류 메시지를 포함한
+	 * 표준화된 에러 응답을 HTTP 400으로 반환한다.
+	 *
+	 * 반환되는 응답은 CommonResponse.fail(...) 형태이며 ExceptionResponse에는
+	 * status=HttpStatus.BAD_REQUEST, code="VALIDATION_ERROR", message="입력값이 유효하지 않습니다.",
+	 * 그리고 각 필드의 검증 오류 메시지를 담은 맵이 포함된다.
+	 *
+	 * @return HTTP 400 (Bad Request)와 필드별 검증 오류 정보를 담은 CommonResponse.fail 응답
+	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<?> tomatoExceptionHandler(MethodArgumentNotValidException e) {
 		log.warn("Validation 실패: {}", e.getMessage());
