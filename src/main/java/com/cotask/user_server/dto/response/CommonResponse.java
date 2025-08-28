@@ -2,6 +2,8 @@ package com.cotask.user_server.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * 요청에 대한 응답을 구조화하는 공통 DTO 클래스입니다.
  *
@@ -18,7 +20,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * @author namung08
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record CommonResponse<T>(Boolean success, T data, ExceptionResponse error) {
+public record CommonResponse<T>(
+	@Schema(description = "요청 성공 여부", example = "true")
+	Boolean success,
+	@Schema(description = "응답 데이터")
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	T data,
+	@Schema(description = "에러 정보")
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	ExceptionResponse error) {
 	/**
 	 * 성공적인 응답을 생성하는 정적 메서드입니다.
 	 *
