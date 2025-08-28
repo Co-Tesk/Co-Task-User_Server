@@ -189,7 +189,7 @@ public class SwaggerConfig {
 		return Arrays.stream(codes)
 			.map(code -> ExampleHolder.builder()
 				.holder(getSwaggerExample(code))
-				.name(code.getCode())
+				.name(code.name())
 				.code(code.getStatus().value())
 				.build()
 			)
@@ -254,8 +254,13 @@ public class SwaggerConfig {
 
 		// 모든 예외를 API 응답에 추가
 		groupedExamples.forEach((status, examples) -> {
-			Content content = new Content();
-			MediaType mediaType = new MediaType();
+			final String statusKey = String.valueOf(status);
+			ApiResponse apiResponse = Optional.ofNullable(responses.get(statusKey))
+				.orElseGet(ApiResponse::new);
+			Content content = Optional.ofNullable(apiResponse.getContent())
+				.orElseGet(Content::new);
+			MediaType mediaType = Optional.ofNullable(content.get("application/json"))
+				.orElseGet(MediaType::new);
 
 			examples.forEach(example -> {
 				mediaType.addExamples(example.getName(), example.getHolder());
@@ -263,7 +268,6 @@ public class SwaggerConfig {
 
 			content.addMediaType("application/json", mediaType);
 
-			ApiResponse apiResponse = new ApiResponse();
 			apiResponse.setContent(content);
 			responses.addApiResponse(String.valueOf(status), apiResponse);
 		});
