@@ -60,6 +60,16 @@ public enum CoTaskExceptionCode {
 		HttpStatus.BAD_REQUEST,
 		"CO_TASK_007",
 		"이미 사용된 인증 정보입니다."
+	),
+	NOT_VERIFY_USER(
+		HttpStatus.FORBIDDEN,
+		"CO_TASK_008",
+		"인증되지 않은 사용자입니다."
+	),
+	WITHDRAWN_USER(
+		HttpStatus.FORBIDDEN,
+		"CO_TASK_009",
+		"탈퇴한 사용자입니다."
 	);
 
 
