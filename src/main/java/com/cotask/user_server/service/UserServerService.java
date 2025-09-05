@@ -1,7 +1,9 @@
 package com.cotask.user_server.service;
 
+import com.cotask.user_server.dto.request.Login;
 import com.cotask.user_server.dto.request.Register;
 import com.cotask.user_server.dto.request.Verification;
+import com.cotask.user_server.dto.response.LoginToken;
 import com.cotask.user_server.infrastructure.exception.CoTaskException;
 
 public interface UserServerService {
@@ -23,4 +25,6 @@ public interface UserServerService {
  * @param verification 검증에 필요한 데이터(예: 이메일 주소, 검증 토큰). DTO 필드의 의미는 해당 타입 문서를 참조하세요.
  */
 void verification(Verification verification);
+
+	LoginToken login(Login login);
 }
