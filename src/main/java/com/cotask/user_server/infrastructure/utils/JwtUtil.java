@@ -1,6 +1,7 @@
 package com.cotask.user_server.infrastructure.utils;
 
-import java.time.Duration;
+import static com.cotask.user_server.infrastructure.utils.Constants.*;
+
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -8,8 +9,6 @@ import java.util.Map;
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Jwts;
@@ -22,8 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtUtil {
 	private final SecretKey accessSecretKey;
 	private final SecretKey refreshSecretKey;
-	private final Long accessExpireMs;
-	private final Long refreshExpireMs;
 	private final String issuer;
 
 	public JwtUtil(
@@ -40,29 +37,22 @@ public class JwtUtil {
 		accessSecretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(accessKey));
 		refreshSecretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(refreshKey));
 		issuer = issuerUri;
-		accessExpireMs = Duration.ofSeconds(30L).toMillis();
-		refreshExpireMs = Duration.ofDays(7L).toMillis();
 	}
 
-	public String getAccessToken(UserDetails userDetails) {
-		return generateToken(userDetails, accessExpireMs, "access", accessSecretKey);
+	public String getAccessToken(String email) {
+		return generateToken(email, ACCESS_EXPIRE_MS, "access", accessSecretKey);
 	}
 
-	public String getRefreshToken(UserDetails userDetails) {
-		return generateToken(userDetails, refreshExpireMs, "refresh", refreshSecretKey);
+	public String getRefreshToken(String email) {
+		return generateToken(email, REFRESH_EXPIRE_MS, "refresh", refreshSecretKey);
 	}
 
-	private String generateToken(UserDetails userDetails, Long expireMs, String category, SecretKey secretKey) {
+	private String generateToken(String email, Long expireMs, String category, SecretKey secretKey) {
 		Map<String, Object> claims = new LinkedHashMap<>();
-		claims.put("roles",
-			userDetails.getAuthorities().stream()
-				.map(GrantedAuthority::getAuthority)
-				.toList()
-		);
 		claims.put("category", category);
 		return Jwts.builder()
 			.claims(claims)
-			.subject(userDetails.getUsername())
+			.subject(email)
 			.issuedAt(new Date(System.currentTimeMillis()))
 			.expiration(new Date(System.currentTimeMillis() + expireMs))
 			.issuer(issuer)
