@@ -5,6 +5,7 @@ import static com.cotask.user_server.infrastructure.exception.CoTaskExceptionCod
 import org.springframework.http.ResponseEntity;
 
 import com.cotask.user_server.annotation.swagger.ApiErrorCodeExamples;
+import com.cotask.user_server.dto.request.Login;
 import com.cotask.user_server.dto.request.Register;
 import com.cotask.user_server.dto.request.Verification;
 
@@ -54,4 +55,17 @@ public interface UserServerController {
 	})
 	@ApiResponse(responseCode = "204", description = "No Content - 인증 성공")
 	ResponseEntity<?> verification(Verification verification);
+
+	@Operation(
+		summary = "로그인",
+		description = "사용자의 로그인을 처리하는 API 입니다. <br>" +
+			"Login DTO를 받아 로그인을 수행합니다. <br>" +
+			"AccessToken 의 경우 'X-ACCESS-TOKEN' 헤더에 담겨 넘어오게 됩니다. "
+	)
+	@ApiErrorCodeExamples({
+		NOT_FOUND_USER,
+		NOT_VERIFY_USER
+	})
+	@ApiResponse(responseCode = "200", description = "OK - 로그인 성공")
+	ResponseEntity<?> login(Login login);
 }
